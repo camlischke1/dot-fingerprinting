@@ -2,18 +2,20 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
-import xml.etree.ElementTree as ET
 import os
+import subprocess
 
 #reading data from source files
 y = np.loadtxt("../CapstoneData/labels", dtype=int)
 print(y.shape)
 
 #features to be extracted
-os.system("rm dot.csv")
-for i in range(0,2):#y.shape[0]):
-    command = 'C:\\\"Program Files\"\Wireshark\\tshark.exe -r ../CapstoneData/dot.pcapng -Y "tcp.stream=={} && tls" -T fields -E header=y -E separator=, -E occurrence=f -E quote=s -e tcp.stream -e ip.src -e ip.dst -e ip.len -e ip.ttl -e ip.proto -e tcp.window_size -e tcp.ack -e tcp.seq -e tcp.len -e frame.time_relative -e frame.time_delta -e tcp.time_relative -e tcp.time_delta -e tls.record.content_type -e _ws.col.Length -e tls.record.length -e tls.app_data || true'.format(i)
-    os.system(command)
+#os.system("rm dot.csv")
+command = 'C:\\\"Program Files\"\Wireshark\\tshark.exe -r ../CapstoneData/dot.pcapng -Y "tcp.stream==0 && tls" -T fields -E header=y -E separator=, -E occurrence=f -E quote=s -e tcp.stream -e ip.src -e ip.dst -e ip.len -e ip.ttl -e ip.proto -e tcp.window_size -e tcp.ack -e tcp.seq -e tcp.len -e frame.time_relative -e frame.time_delta -e tcp.time_relative -e tcp.time_delta -e tls.record.content_type -e _ws.col.Length -e tls.record.length -e tls.app_data'
+for i in range(1,3):#y.shape[0]):
+    command += ' || C:\\\"Program Files\"\Wireshark\\tshark.exe -r ../CapstoneData/dot.pcapng -Y "tcp.stream=={} && tls" -T fields -E header=y -E separator=, -E occurrence=f -E quote=s -e tcp.stream -e ip.src -e ip.dst -e ip.len -e ip.ttl -e ip.proto -e tcp.window_size -e tcp.ack -e tcp.seq -e tcp.len -e frame.time_relative -e frame.time_delta -e tcp.time_relative -e tcp.time_delta -e tls.record.content_type -e _ws.col.Length -e tls.record.length -e tls.app_data'.format(i)
+
+os.system(command)
 
 
 '''
