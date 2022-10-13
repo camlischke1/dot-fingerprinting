@@ -1,17 +1,25 @@
-from keras.utils import to_categorical
+#from keras.utils import to_categorical
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
+import xml.etree.ElementTree as ET
+import os
 
-#same results for same model, makes it deterministic
-np.random.seed(1234)
-tf.random.set_seed(1234)
+#reading data from source files
+y = np.loadtxt("../CapstoneData/labels", dtype=int)
+print(y.shape)
 
+#features to be extracted
 
-#reading data
-input = np.load("../Datasets/datasets_nav_whitepredict/coop_nav_whitebox_prediction_50.npy", allow_pickle=True)
+for i in range(0,2):#y.shape[0]):
+    os.system('C:\\\"Program Files\"\Wireshark\\tshark.exe -r ../CapstoneData/dot.pcapng -Y "tcp.stream=='+
+                 str(i) + " && tls\" -T fields -E header=y -E separator=, -E occurrence=f -E quote=s "\
+                 "-e tcp.stream -e ip.src -e ip.dst -e ip.len -e ip.ttl -e ip.proto -e tcp.window_size "\
+                 "-e tcp.ack -e tcp.seq -e tcp.len -e frame.time_relative -e frame.time_delta -e "\
+                 "tcp.time_relative -e tcp.time_delta -e tls.record.content_type -e _ws.col.Length -e "\
+                 "tls.record.length -e tls.app_data")
 
-
+'''
 pre = np.asarray(input[:,0])
 a1 = np.asarray(input[:,1])
 a2 = np.asarray(input[:,2])
@@ -45,3 +53,4 @@ model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['acc'])
 history = model.fit(trainX, trainY, epochs=5000, batch_size=5000, verbose=2, validation_data = (valX,valY),shuffle=False,callbacks=es)
 
 model.save('DenseNavWhitePredict.keras')
+'''
