@@ -16,9 +16,11 @@ command = "C:\\Progra~1\Wireshark\\tshark.exe -r ../CapstoneData/dot.pcapng -Y t
          "frame.time_delta -e tcp.time_relative -e tcp.time_delta -e tls.record.content_type -e _ws.col.Length -e "\
          "tls.record.length -e tls.app_data > {}".format(path)
 os.system(command)
+print("done")
 
-x = np.read_csv(path, ',', header=None)     #after creation of csv, read it into np array
+x = np.genfromtxt(path, ",")     #after creation of csv, read it into np array
 np.save('dot.npy', x, allow_pickle=True)
 print(x.shape)
+
 
 
