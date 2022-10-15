@@ -37,7 +37,7 @@ for i in range(0,df.shape[0]-1):
     if (stream_id != stream_id2):           #if the next packet is not in this stream, recreate stream_list
         x.append(stream_list)
         stream_list = []
-    if i%100000 == 0:
+    if i%100000 == 0:                       #print for progress
         print(i)
 
 # get the last 7 packets too
