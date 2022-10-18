@@ -22,8 +22,7 @@ x = np.delete(x, 2, 2)      # IP ttl covered by source IP
 
 print("Extracting features...")
 # make sourceIP into binary value of sent by client 64bytes(-1), sent by server 128bytes(1)
-x = np.where(x == '192.168.126.122',1,x)    # destination is client IP
-x = np.where(x == '192.168.126.131',-1,x)    # destination is server IP
+x[:,:,0] = np.where(x[:,:,0] == '192.168.126.122',1,-1)    # destination is client IP
 
 # make make tls.record.content_type map to 0,1,2,3 respectively
 x[:,:,9] = np.subtract(x[:,:,9],20)
@@ -40,25 +39,6 @@ for i in range(x.shape[0]):
 
 print("Normalizing...")
 x_norm = (x - np.min(x)) / (np.max(x) - np.min(x))
-print(x.shape)
-print(x_norm.shape)
 
 print("Saving...")
 np.save('../CapstoneData/dot_norm.npy',x_norm)
-
-print("Check for completeness...")
-# check to make sue the normalization process went well
-print(str(np.unique(x[:,:,0])) + "    " + str(np.unique(x_norm[:,:,0])))
-print(str(np.unique(x[:,:,0]).shape) + "    " + str(np.unique(x_norm[:,:,0]).shape))
-print(str(np.unique(x[:,:,1]).shape) + "    " + str(np.unique(x_norm[:,:,1]).shape))
-print(str(np.unique(x[:,:,2]).shape) + "    " + str(np.unique(x_norm[:,:,2]).shape))
-print(str(np.unique(x[:,:,3]).shape) + "    " + str(np.unique(x_norm[:,:,3]).shape))
-print(str(np.unique(x[:,:,4]).shape) + "    " + str(np.unique(x_norm[:,:,4]).shape))
-print(str(np.unique(x[:,:,5]).shape) + "    " + str(np.unique(x_norm[:,:,5]).shape))
-print(str(np.unique(x[:,:,6]).shape) + "    " + str(np.unique(x_norm[:,:,6]).shape))
-print(str(np.unique(x[:,:,7]).shape) + "    " + str(np.unique(x_norm[:,:,7]).shape))
-print(str(np.unique(x[:,:,8]).shape) + "    " + str(np.unique(x_norm[:,:,8]).shape))
-print(str(np.unique(x[:,:,9]).shape) + "    " + str(np.unique(x_norm[:,:,9]).shape))
-print(str(np.unique(x[:,:,10]).shape) + "    " + str(np.unique(x_norm[:,:,10]).shape))
-print(str(np.unique(x[:,:,11]).shape) + "    " + str(np.unique(x_norm[:,:,11]).shape))
-print(str(np.unique(x[:,:,12]).shape) + "    " + str(np.unique(x_norm[:,:,12]).shape))
