@@ -7,24 +7,23 @@ import tensorflow as tf
 
 
 #same results for same model, makes it deterministic
-np.random.seed(1234)
+#np.random.seed(1234)
 tf.random.set_seed(1234)
 
 
 #reading data
-x = np.load("../CapstoneData/dotsample_norm.npy", allow_pickle=True)
-y = np.load("../CapstoneData/y.npy", allow_pickle=True)[0:5]
-print(x.shape)
+x = np.load("../CapstoneData/x.npy", allow_pickle=True)
+x = np.asarray(x).astype('float32')
+y = np.load("../CapstoneData/y.npy", allow_pickle=True)
+print(np.unique(y))
+y = to_categorical(y)
 print(y.shape)
 
-
+'''
 trainX = x[:150000]
-trainY = x[:150000]
+trainY = y[:150000]
 valX = x[150000:170000]
-valY = x[150000:170000]
-trainY = to_categorical(trainY)
-valY = to_categorical(valY)
-
+valY = y[150000:170000]
 
 
 es = EarlyStopping(monitor='val_acc', mode='max', verbose=1, patience=100)
@@ -36,6 +35,7 @@ model.add(Dense(16, activation='relu'))
 model.add(Dense(valY.shape[1],activation='sigmoid'))
 model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['acc'])
 # fit network
-history = model.fit(trainX, trainY, epochs=5, batch_size=5000, verbose=2, validation_data = (valX,valY),shuffle=False,callbacks=es)
+history = model.fit(trainX, trainY, epochs=5000, batch_size=5000, verbose=2, validation_data = (valX,valY),shuffle=False,callbacks=es)
 
 model.save('UnpaddedLSTM.keras')
+'''
