@@ -6,6 +6,7 @@ import os
 
 path = "../CapstoneData/dot.csv"        #assigning the csv file path
 
+
 #creating data
 labels = pd.read_csv("../CapstoneData/labels.txt", header=None)
 print(labels.shape)
@@ -14,7 +15,7 @@ labels = np.asarray(labels[1].tolist())
 np.save('../CapstoneData/y.npy', y, allow_pickle=True)
 np.save('../CapstoneData/urls.npy', y, allow_pickle=True)
 
-
+print("Writing .csv file...")
 command = "C:\\Progra~1\Wireshark\\tshark.exe -r ../CapstoneData/dot.pcapng -Y tls "\
          "-T fields -E header=y -E separator=, -E occurrence=f -E quote=n -e tcp.stream -e ip.src -e ip.dst -e ip.len "\
          "-e ip.ttl -e ip.proto -e tcp.window_size -e tcp.ack -e tcp.seq -e tcp.len -e frame.time_relative -e "\
@@ -27,7 +28,7 @@ df = pd.read_csv(path)     #after creation of csv, read it into dataframe
 headers = list(df.columns)
 print(headers)
 
-#reshape dataframe
+print("Shaping dataframe by tcp stream id...")
 x = []
 stream_list = []
 for i in range(0,df.shape[0]-1):
@@ -45,6 +46,8 @@ for i in range(0,df.shape[0]-1):
 stream_list.append(df.iloc[df.shape[0]-1][headers[1:]].values)
 x.append(stream_list)
 
+
+print("Saving...")
 x = np.asarray(x)
 print(x.shape)
 np.save('../CapstoneData/dot_raw.npy', x, allow_pickle=True)

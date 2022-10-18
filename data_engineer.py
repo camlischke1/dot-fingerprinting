@@ -5,7 +5,7 @@ import math
 from sklearn import preprocessing
 
 print("Loading...")
-x = np.load('../CapstoneData/dot.npy', allow_pickle=True)
+x = np.load('../CapstoneData/dot_raw.npy', allow_pickle=True)
 
 print("Deleting redundant data...")
 # delete redundant data attributes
@@ -18,6 +18,8 @@ x = np.delete(x, 2, 2)      # IP ttl covered by source IP
 # 0-ip.dest    1-ip.len   2-tcp.window_size   3-tcp.ack   4-tcp.seq
 # 5-tcp.len   6-frame.time_relative   7-frame.time_delta     8-tcp.time_relative    9-tcp.time_delta
 # 10-tls.record.content_type  11-_ws.col.Length   12-tls.record.length    13-tls.app_data
+# 14-tcp.flags  15-tcp.hdr_len  16-tcp.syncookie.time   17-frame.len    18-frame.offset_shift
+# 19-frame.packet_flags_fcs_length
 
 print("Hashing encrypted data...")
 # convert tls.app_data (encrypted data string) to hash of 8 bytes and then convert hash to integer
