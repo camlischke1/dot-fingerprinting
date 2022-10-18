@@ -15,11 +15,11 @@ tf.random.set_seed(1234)
 x = np.load("../CapstoneData/x.npy", allow_pickle=True)
 x = np.asarray(x).astype('float32')
 y = np.load("../CapstoneData/y.npy", allow_pickle=True)
-print(np.unique(y))
+print(np.unique(y,return_counts=True))
 y = to_categorical(y)
 print(y.shape)
 
-'''
+
 trainX = x[:150000]
 trainY = y[:150000]
 valX = x[150000:170000]
@@ -38,4 +38,3 @@ model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['acc'])
 history = model.fit(trainX, trainY, epochs=5000, batch_size=5000, verbose=2, validation_data = (valX,valY),shuffle=False,callbacks=es)
 
 model.save('UnpaddedLSTM.keras')
-'''
