@@ -4,16 +4,12 @@ import hashlib
 import math
 from sklearn import preprocessing
 
-x = np.load('../CapstoneData/dotsample.npy', allow_pickle=True)
-y = np.load('../CapstoneData/y.npy', allow_pickle=True)
-urls = np.load('../CapstoneData/urls.npy', allow_pickle=True)
+x = np.load('../CapstoneData/dot.npy', allow_pickle=True)
 
 # delete redundant data attributes
 x = np.delete(x, 0, 2)      # source IP (covered by dest IP)
 x = np.delete(x, 3, 2)      # ip.protocol is '6' for all packets
 x = np.delete(x, 2, 2)      # IP ttl covered by source IP
-
-
 
 
 # The headers below relate to the attributes in each of the captured packets.
@@ -42,7 +38,7 @@ for i in range(x.shape[0]):
 x_norm = (x - np.min(x)) / (np.max(x) - np.min(x))
 print(x.shape)
 print(x_norm.shape)
-np.save('../CapstoneData/dotsample_norm.npy',x_norm)
+np.save('../CapstoneData/dot_norm.npy',x_norm)
 '''
 # check to make sue the normalization process went well
 print(str(np.unique(x[:,:,0]).shape) + "    " + str(np.unique(x_norm[:,:,0]).shape))
