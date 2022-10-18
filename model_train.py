@@ -17,10 +17,10 @@ x = np.asarray(x).astype('float32')
 y = np.load("../CapstoneData/y.npy", allow_pickle=True)
 print(np.unique(y,return_counts=True))
 y = to_categorical(y)
-print(y.shape)
 
 
 trainX = x[:150000]
+print(trainX[0])
 trainY = y[:150000]
 valX = x[150000:170000]
 valY = y[150000:170000]
