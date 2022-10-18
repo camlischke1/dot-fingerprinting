@@ -41,4 +41,4 @@ print("Normalizing...")
 x_norm = (x - np.min(x)) / (np.max(x) - np.min(x))
 
 print("Saving...")
-np.save('../CapstoneData/dot_norm.npy',x_norm)
+np.save('../CapstoneData/x.npy',x_norm)
