@@ -12,7 +12,7 @@ print(labels.shape)
 y = np.asarray(labels[0].tolist())
 labels = np.asarray(labels[1].tolist())
 np.save('../CapstoneData/y.npy', y, allow_pickle=True)
-np.save('../CapstoneData/labels.npy', y, allow_pickle=True)
+np.save('../CapstoneData/urls.npy', y, allow_pickle=True)
 
 
 command = "C:\\Progra~1\Wireshark\\tshark.exe -r ../CapstoneData/dot.pcapng -Y tls "\
