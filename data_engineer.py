@@ -4,8 +4,10 @@ import hashlib
 import math
 from sklearn import preprocessing
 
+print("Loading...")
 x = np.load('../CapstoneData/dot.npy', allow_pickle=True)
 
+print("Deleting redundant data...")
 # delete redundant data attributes
 x = np.delete(x, 0, 2)      # source IP (covered by dest IP)
 x = np.delete(x, 3, 2)      # ip.protocol is '6' for all packets
@@ -18,6 +20,7 @@ x = np.delete(x, 2, 2)      # IP ttl covered by source IP
 # 5-tcp.len   6-frame.time_relative   7-frame.time_delta     8-tcp.time_relative    9-tcp.time_delta
 # 10-tls.record.content_type  11-_ws.col.Length   12-tls.record.length    13-tls.app_data
 
+print("Extracting features...")
 # make sourceIP into binary value of sent by client 64bytes(-1), sent by server 128bytes(1)
 x = np.where(x == '192.168.126.122',1,x)    # destination is client IP
 x = np.where(x == '192.168.126.131',-1,x)    # destination is server IP
@@ -26,6 +29,7 @@ x = np.where(x == '192.168.126.131',-1,x)    # destination is server IP
 x[:,:,9] = np.subtract(x[:,:,9],20)
 x[:,:,9] = x[:,:,9].astype(int)
 
+print("Hashing encrypted data...")
 # convert tls.app_data (encrypted data string) to hash of 8 bytes and then convert hash to integer
 for i in range(x.shape[0]):
     x[i, 4, 13] = int("0x" + str(hashlib.shake_256(str(x[i, 4, 13]).encode()).hexdigest(4)),16)
@@ -34,13 +38,17 @@ for i in range(x.shape[0]):
         if math.isnan(x[i, j, 13]):
             x[i, j, 13] = 0
 
-
+print("Normalizing...")
 x_norm = (x - np.min(x)) / (np.max(x) - np.min(x))
 print(x.shape)
 print(x_norm.shape)
+
+print("Saving...")
 np.save('../CapstoneData/dot_norm.npy',x_norm)
-'''
+
+print("Check for completeness...")
 # check to make sue the normalization process went well
+print(str(np.unique(x[:,:,0])) + "    " + str(np.unique(x_norm[:,:,0])))
 print(str(np.unique(x[:,:,0]).shape) + "    " + str(np.unique(x_norm[:,:,0]).shape))
 print(str(np.unique(x[:,:,1]).shape) + "    " + str(np.unique(x_norm[:,:,1]).shape))
 print(str(np.unique(x[:,:,2]).shape) + "    " + str(np.unique(x_norm[:,:,2]).shape))
@@ -54,4 +62,3 @@ print(str(np.unique(x[:,:,9]).shape) + "    " + str(np.unique(x_norm[:,:,9]).sha
 print(str(np.unique(x[:,:,10]).shape) + "    " + str(np.unique(x_norm[:,:,10]).shape))
 print(str(np.unique(x[:,:,11]).shape) + "    " + str(np.unique(x_norm[:,:,11]).shape))
 print(str(np.unique(x[:,:,12]).shape) + "    " + str(np.unique(x_norm[:,:,12]).shape))
-'''
