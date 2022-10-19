@@ -17,11 +17,10 @@ np.save('../CapstoneData/urls.npy', y, allow_pickle=True)
 
 print("Writing .csv file...")
 command = "C:\\Progra~1\Wireshark\\tshark.exe -r ../CapstoneData/dot.pcapng -Y tls "\
-         "-T fields -E header=y -E separator=, -E occurrence=f -E quote=n -e tcp.stream -e ip.src -e ip.dst -e ip.len "\
-         "-e ip.ttl -e ip.proto -e tcp.window_size -e tcp.ack -e tcp.seq -e tcp.len -e frame.time_relative -e "\
+         "-T fields -E header=y -E separator=, -E occurrence=f -E quote=n -e tcp.stream -e ip.dst -e ip.len "\
+         "-e tcp.window_size -e tcp.ack -e tcp.seq -e tcp.len -e frame.time_relative -e "\
          "frame.time_delta -e tcp.time_relative -e tcp.time_delta -e tls.record.content_type -e _ws.col.Length -e "\
-         "tls.record.length -e tls.app_data -e tcp.flags -e tcp.hdr_len -e tcp.syncookie.time -e frame.len "\
-         "-e frame.offset_shift -e frame.packet_flags_fcs_length > {}".format(path)
+         "tls.record.length -e tls.app_data -e frame.len > {}".format(path)
 os.system(command)
 
 df = pd.read_csv(path)     #after creation of csv, read it into dataframe

@@ -7,18 +7,6 @@ from sklearn import preprocessing
 print("Loading...")
 x = np.load('../CapstoneData/dot_raw.npy', allow_pickle=True)
 
-
-print("Deleting redundant data...")
-# delete redundant data attributes
-x = np.delete(x, 0, 2)      # source IP (covered by dest IP)
-x = np.delete(x, 3, 2)      # ip.protocol is '6' for all packets
-x = np.delete(x, 2, 2)      # IP ttl covered by source IP
-x = np.delete(x, -1, 2)     # frame.packet_flags_fcs_length
-x = np.delete(x, -1, 2)     # frame.len is all the same
-x = np.delete(x, -2, 2)     # syn cookies are all the same
-x = np.delete(x, -2, 2)     # tcp.header length all the same
-x = np.delete(x, -2, 2)     # tcp.flags all the same
-
 # The headers below relate to the attributes in each of the captured packets, after the above modifications
 
 # 0-ip.dest    1-ip.len   2-tcp.window_size   3-tcp.ack   4-tcp.seq
