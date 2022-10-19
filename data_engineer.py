@@ -7,19 +7,23 @@ from sklearn import preprocessing
 print("Loading...")
 x = np.load('../CapstoneData/dot_raw.npy', allow_pickle=True)
 
+
 print("Deleting redundant data...")
 # delete redundant data attributes
 x = np.delete(x, 0, 2)      # source IP (covered by dest IP)
 x = np.delete(x, 3, 2)      # ip.protocol is '6' for all packets
 x = np.delete(x, 2, 2)      # IP ttl covered by source IP
+x = np.delete(x, -1, 2)     # frame.packet_flags_fcs_length
+x = np.delete(x, -1, 2)     # frame.len is all the same
+x = np.delete(x, -2, 2)     # syn cookies are all the same
+x = np.delete(x, -2, 2)     # tcp.header length all the same
+x = np.delete(x, -2, 2)     # tcp.flags all the same
 
-# The headers below relate to the attributes in each of the captured packets.
+# The headers below relate to the attributes in each of the captured packets, after the above modifications
 
 # 0-ip.dest    1-ip.len   2-tcp.window_size   3-tcp.ack   4-tcp.seq
 # 5-tcp.len   6-frame.time_relative   7-frame.time_delta     8-tcp.time_relative    9-tcp.time_delta
-# 10-tls.record.content_type  11-_ws.col.Length   12-tls.record.length    13-tls.app_data
-# 14-tcp.flags  15-tcp.hdr_len  16-tcp.syncookie.time   17-frame.len    18-frame.offset_shift
-# 19-frame.packet_flags_fcs_length
+# 10-tls.record.content_type  11-_ws.col.Length   12-tls.record.length    13-tls.app_data   14-frame.len
 
 print("Hashing encrypted data...")
 # convert tls.app_data (encrypted data string) to hash of 8 bytes and then convert hash to integer
@@ -35,14 +39,19 @@ for i in range(x.shape[0]):
 print("Extracting features...")
 # make sourceIP into binary value of sent by client 64bytes(-1), sent by server 128bytes(1)
 x[:,:,0] = np.where(x[:,:,0] == '192.168.126.122',1,-1)    # destination is client IP
-
 # make make tls.record.content_type map to 0,1,2,3 respectively
 x[:,:,10] = np.subtract(x[:,:,10],20)
 x[:,:,10] = x[:,:,10].astype(int)
 
 print("Normalizing...")
-x_norm = (x - np.min(x)) / (np.max(x) - np.min(x))
+#convert to float to make normalization easy
+x = np.array(x,dtype='float64')
+for i in range(x.shape[2]):
+    mean = np.mean(x[:,:,i])
+    std = np.std(x[:,:,i])
+    x[:, :, i] = x[:, :, i] - mean
+    x[:, :, i] = x[:, :, i] / std
 
 
 print("Saving...")
-np.save('../CapstoneData/x.npy',x_norm)
+np.save('../CapstoneData/x.npy',x)
