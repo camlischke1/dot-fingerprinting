@@ -3,9 +3,11 @@ import numpy as np
 import hashlib
 import math
 from sklearn import preprocessing
+from tqdm import tqdm
 
 print("Loading...")
-x = np.load('../CapstoneData/dot_raw.npy', allow_pickle=True)
+x = np.load('../CapstoneData/dot_raw_padded.npy', allow_pickle=True)
+print(x.shape)
 
 # The headers below relate to the attributes in each of the captured packets, after the above modifications
 
@@ -13,9 +15,9 @@ x = np.load('../CapstoneData/dot_raw.npy', allow_pickle=True)
 # 5-tcp.len   6-frame.time_relative   7-frame.time_delta     8-tcp.time_relative    9-tcp.time_delta
 # 10-tls.record.content_type  11-_ws.col.Length   12-tls.record.length    13-tls.app_data   14-frame.len
 
-print("Hashing encrypted data...")
+print("Hashing encrypted data and removing NaN...")
 # convert tls.app_data (encrypted data string) to hash of 8 bytes and then convert hash to integer
-for i in range(x.shape[0]):
+for i in tqdm(range(x.shape[0])):
     x[i, 4, 13] = int("0x" + str(hashlib.shake_256(str(x[i, 4, 13]).encode()).hexdigest(4)),16)
     x[i, 5, 13] = int("0x" + str(hashlib.shake_256(str(x[i, 5, 13]).encode()).hexdigest(4)),16)
     for j in range(x.shape[1]):
@@ -34,7 +36,7 @@ x[:,:,10] = x[:,:,10].astype(int)
 print("Normalizing...")
 #convert to float to make normalization easy
 x = np.array(x,dtype='float64')
-for i in range(x.shape[2]):
+for i in tqdm(range(x.shape[2])):
     mean = np.mean(x[:,:,i])
     std = np.std(x[:,:,i])
     x[:, :, i] = x[:, :, i] - mean
@@ -42,4 +44,4 @@ for i in range(x.shape[2]):
 
 
 print("Saving...")
-np.save('../CapstoneData/x.npy',x)
+np.save('../CapstoneData/x_padded.npy',x)

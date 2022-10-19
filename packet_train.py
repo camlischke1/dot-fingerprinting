@@ -12,9 +12,9 @@ tf.random.set_seed(1234)
 
 
 #reading data
-x = np.load("../CapstoneData/x.npy", allow_pickle=True)
+x = np.load("../CapstoneData/x_padded.npy", allow_pickle=True)
 x = np.asarray(x).astype('float32')
-y = np.load("../CapstoneData/y.npy", allow_pickle=True)
+y = np.load("../CapstoneData/y_padded.npy", allow_pickle=True)
 print(np.unique(y,return_counts=True))
 y = to_categorical(y)
 
@@ -27,7 +27,7 @@ valX = x[150000:170000]
 valY = y[150000:170000]
 
 
-es = EarlyStopping(monitor='val_acc', mode='max', verbose=1, patience=100)
+#es = EarlyStopping(monitor='val_acc', mode='max', verbose=1, patience=500)
 model = Sequential()
 model.add(Dense(128, activation='relu'))
 model.add(Dense(64,activation='relu'))
@@ -35,6 +35,6 @@ model.add(Dense(16, activation='relu'))
 model.add(Dense(valY.shape[1],activation='sigmoid'))
 model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['acc'])
 # fit network
-history = model.fit(trainX, trainY, epochs=5000, batch_size=5000, verbose=2, validation_data = (valX,valY),shuffle=False,callbacks=es)
+history = model.fit(trainX, trainY, epochs=5000, batch_size=5000, verbose=2, validation_data = (valX,valY),shuffle=False)#,callbacks=es)
 
-model.save('UnpaddedDense.keras')
+model.save('PaddedDense.keras')
