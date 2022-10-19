@@ -12,9 +12,9 @@ tf.random.set_seed(1234)
 
 
 #reading data
-x = np.load("../CapstoneData/x.npy", allow_pickle=True)
+x = np.load("../CapstoneData/x_padded.npy", allow_pickle=True)
 x = np.asarray(x).astype('float32')
-y = np.load("../CapstoneData/y.npy", allow_pickle=True)
+y = np.load("../CapstoneData/y_padded.npy", allow_pickle=True)
 print(np.unique(y,return_counts=True))
 y = to_categorical(y)
 
@@ -37,5 +37,5 @@ model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['acc'])
 # fit network
 history = model.fit(trainX, trainY, epochs=5000, batch_size=5000, verbose=2, validation_data = (valX,valY),shuffle=False,callbacks=es)
 
-model.save('UnpaddedDense.keras')
-np.save("../CapstoneData/unpadded_history.npy", history.history,allow_pickle=True)
+model.save('PaddedPacketClassifier.keras')
+np.save("../CapstoneData/padded_history.npy", history.history,allow_pickle=True)

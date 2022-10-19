@@ -15,7 +15,7 @@ testX = x[170000:]
 testY = y[170000:]
 print(np.unique(testY,return_counts=True))
 
-model = load_model('UnpaddedDense.keras')
+model = load_model('UnpaddedPacketClassifier.keras')
 
 pred = np.array(model.predict(testX))
 pred = np.argmax(pred,axis=1)
