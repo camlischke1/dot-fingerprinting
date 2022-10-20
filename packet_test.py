@@ -7,8 +7,8 @@ from tensorflow.python.keras.models import Sequential, load_model
 x = np.load("../CapstoneData/padded_x.npy", allow_pickle=True)
 x = np.asarray(x).astype('float32')
 y = np.load("../CapstoneData/padded_y.npy", allow_pickle=True)
-x = x[200000:]
-y = y[200000:]
+#x = x[200000:]
+#y = y[200000:]
 
 # only use the 5th (index 4) packet in the stream (the query)
 x = np.reshape(x[:,4,:],(x.shape[0],x.shape[2]))
