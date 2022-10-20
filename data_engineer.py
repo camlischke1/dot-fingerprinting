@@ -6,7 +6,7 @@ from sklearn import preprocessing
 from tqdm import tqdm
 
 print("Loading...")
-x = np.load('../CapstoneData/dot_raw_padded.npy', allow_pickle=True)
+x = np.load('../CapstoneData/padded_dot_raw.npy', allow_pickle=True)
 print(x.shape)
 
 # The headers below relate to the attributes in each of the captured packets, after the above modifications
@@ -44,4 +44,4 @@ for i in tqdm(range(x.shape[2])):
 
 
 print("Saving...")
-np.save('../CapstoneData/x_padded.npy',x)
+np.save('../CapstoneData/padded_x.npy',x)

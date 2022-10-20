@@ -12,19 +12,19 @@ tf.random.set_seed(1234)
 
 
 #reading data
-x = np.load("../CapstoneData/x_padded.npy", allow_pickle=True)
+x = np.load("../CapstoneData/padded_x.npy", allow_pickle=True)
 x = np.asarray(x).astype('float32')
-y = np.load("../CapstoneData/y_padded.npy", allow_pickle=True)
+y = np.load("../CapstoneData/padded_y.npy", allow_pickle=True)
 print(np.unique(y,return_counts=True))
 y = to_categorical(y)
 
 #only use the 5th (index 4) packet in the stream (the query)
-x = np.reshape(x[:,5,:],(x.shape[0],x.shape[2]))
+x = np.reshape(x[:,4,:],(x.shape[0],x.shape[2]))
 
 trainX = x[:180000]
 trainY = y[:180000]
-valX = x[180000:]
-valY = y[180000:]
+valX = x[180000:200000]
+valY = y[180000:200000]
 
 
 es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=100)
@@ -38,4 +38,4 @@ model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['acc'])
 history = model.fit(trainX, trainY, epochs=5000, batch_size=5000, verbose=2, validation_data = (valX,valY),shuffle=False,callbacks=es)
 
 model.save('PaddedPacketClassifier.keras')
-np.save("../CapstoneData/padded_history.npy", history.history,allow_pickle=True)
+np.save("../CapstoneData/padded_history.npy", history.history, allow_pickle=True)

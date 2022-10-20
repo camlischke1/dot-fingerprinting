@@ -4,22 +4,23 @@ from sklearn.metrics import accuracy_score, confusion_matrix, classification_rep
 from tensorflow.python.keras.models import Sequential, load_model
 
 # reading data
-x = np.load("../CapstoneData/x.npy", allow_pickle=True)
+x = np.load("../CapstoneData/padded_x.npy", allow_pickle=True)
 x = np.asarray(x).astype('float32')
-y = np.load("../CapstoneData/y.npy", allow_pickle=True)
+y = np.load("../CapstoneData/padded_y.npy", allow_pickle=True)
+x = x[200000:]
+y = y[200000:]
 
 # only use the 5th (index 4) packet in the stream (the query)
-x = np.reshape(x[:,5,:],(x.shape[0],x.shape[2]))
+x = np.reshape(x[:,4,:],(x.shape[0],x.shape[2]))
 
-testX = x[170000:]
-testY = y[170000:]
-print(np.unique(testY,return_counts=True))
 
-model = load_model('UnpaddedPacketClassifier.keras')
+model = load_model('PaddedPacketClassifier.keras')
 
-pred = np.array(model.predict(testX))
+pred = np.array(model.predict(x))
 pred = np.argmax(pred,axis=1)
 
-print(accuracy_score(testY,pred))
-print(classification_report(testY,pred))
-print(confusion_matrix(testY,pred))
+print(accuracy_score(y,pred))
+print(classification_report(y,pred))
+print(confusion_matrix(y,pred))
+
+np.save("../CapstoneData/padded_yhat.npy",pred,allow_pickle=True)
