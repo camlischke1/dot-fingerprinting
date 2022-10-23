@@ -5,17 +5,17 @@ import numpy as np
 from tqdm import tqdm
 import os
 
-path = "../CapstoneData/padded_dot.csv"        #assigning the csv file path
+path = "../CapstoneData/multi_padded_dot.csv"        #assigning the csv file path
 
 
 #creating data
-labels = pd.read_csv("../CapstoneData/padded_labels.txt", header=None)
+labels = pd.read_csv("../CapstoneData/multi_labels.txt", header=None)
 print(labels.shape)
 y = np.asarray(labels[0].tolist())
 labels = np.asarray(labels[1].tolist())
 
 print("Writing .csv file...")
-command = "C:\\Progra~1\Wireshark\\tshark.exe -r ../CapstoneData/padded_dot.pcapng -Y tls "\
+command = "C:\\Progra~1\Wireshark\\tshark.exe -r ../CapstoneData/multi_padded_dot.pcapng -Y tls "\
          "-T fields -E header=y -E separator=, -E occurrence=f -E quote=n -e tcp.stream -e ip.dst -e ip.len "\
          "-e tcp.window_size -e tcp.ack -e tcp.seq -e tcp.len -e frame.time_relative -e "\
          "frame.time_delta -e tcp.time_relative -e tcp.time_delta -e tls.record.content_type -e _ws.col.Length -e "\
@@ -50,6 +50,6 @@ x.append(stream_list)
 print("Saving...")
 x = np.asarray(x)
 print(x.shape)
-np.save('../CapstoneData/padded_dot_raw.npy', x, allow_pickle=True)
-np.save('../CapstoneData/padded_y.npy', y, allow_pickle=True)
-np.save('../CapstoneData/padded_labels.npy', labels, allow_pickle=True)
+np.save('../CapstoneData/multi_padded_dot_raw.npy', x, allow_pickle=True)
+np.save('../CapstoneData/multi_padded_y.npy', y, allow_pickle=True)
+np.save('../CapstoneData/multi_padded_labels.npy', labels, allow_pickle=True)
