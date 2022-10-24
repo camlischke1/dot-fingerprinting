@@ -5,11 +5,7 @@ from tensorflow.python.keras.layers import LSTM, Dense
 from tensorflow.python.keras.models import Sequential
 import tensorflow as tf
 
-
-#same results for same model, makes it deterministic
-#np.random.seed(1234)
 tf.random.set_seed(1234)
-
 
 #reading data
 x = np.load("../CapstoneData/multi_padded_x.npy", allow_pickle=True)
