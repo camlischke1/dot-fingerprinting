@@ -18,8 +18,8 @@ print(x.shape)
 print("Hashing encrypted data and removing NaN...")
 # convert tls.app_data (encrypted data string) to hash of 8 bytes and then convert hash to integer
 for i in tqdm(range(x.shape[0])):
-    x[i, 4, 13] = int("0x" + str(hashlib.shake_256(str(x[i, 4, 13]).encode()).hexdigest(4)),16)
-    x[i, 5, 13] = int("0x" + str(hashlib.shake_256(str(x[i, 5, 13]).encode()).hexdigest(4)),16)
+    x[i, 4, 13] = int("0x" + x[i, 4, 13][16:32],16)
+    x[i, 5, 13] = int("0x" + x[i, 5, 13][16:32],16)
     for j in range(x.shape[1]):
         for k in range(1,x.shape[2]):
             if (isinstance(x[i, j, k], float)):
@@ -44,4 +44,4 @@ for i in tqdm(range(x.shape[2])):
 
 
 print("Saving...")
-np.save('../CapstoneData/multi_padded_x.npy',x)
+np.save('../CapstoneData/multi_padded_x_int.npy',x)
