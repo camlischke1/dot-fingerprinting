@@ -22,7 +22,7 @@ command = "C:\\Progra~1\Wireshark\\tshark.exe -r ../CapstoneData/multi_padded_do
          "tls.record.length -e tls.app_data -e frame.len > {}".format(path)
 os.system(command)
 
-df = pd.read_csv(path)     #after creation of csv, read it into dataframe
+df = pd.read_csv(path)     # after creation of csv, read it into dataframe
 headers = list(df.columns)
 print(headers)
 
