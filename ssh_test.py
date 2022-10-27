@@ -38,9 +38,9 @@ print(tls)
 print("Collecting all matches...")
 matches = []
 for i in tqdm(range(len(tls))):
-    low = tls.iloc[i]["_ws.col.Time"] - delta
+    current = tls.iloc[i]["_ws.col.Time"]
     high = tls.iloc[i]["_ws.col.Time"] + delta
-    matches.append(ssh.index[ssh['_ws.col.Time'].between(low,high)].tolist())
+    matches.append(ssh.index[ssh['_ws.col.Time'].between(current,high)].tolist())
 
 
 print("Testing matches...")
